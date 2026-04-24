@@ -1,0 +1,79 @@
+package Demo;
+
+//Custom Exception Class
+class LessBalanceException extends Exception {
+    public LessBalanceException(double amount) {
+        super("withdraw amount (rs " + amount + ") is not valid. insufficient 
+balance.");
+    }
+}
+
+//Bank Account Class
+class BankAccount {
+    private double balance;
+
+    // Constructor (Minimum balance ₹1000)
+    public BankAccount(double balance) {
+        if (balance < 1000) {
+            System.out.println("Minimum balance should be Rs 1000. Setting balance to Rs 
+1000.");
+            this.balance = 1000;
+        } else {
+            this.balance = balance;
+        }
+    }
+
+    // Deposit Method
+    public void deposit(double amount) {
+        balance += amount;
+        System.out.println("Deposited: Rs " + amount);
+        System.out.println("Current Balance: Rs " + balance);
+    }
+
+    // Withdraw Method
+    public void withdraw(double amount) throws LessBalanceException {
+        if (balance - amount < 1000) {
+            throw new LessBalanceException(amount);
+        } else {
+            balance -= amount;
+            System.out.println("Withdrawn: Rs " + amount);
+            System.out.println("Current Balance: Rs " + balance);
+        }
+    }
+
+    // Display Balance
+    public void displayBalance() {
+        System.out.println("Balance: Rs " + balance);
+    }
+}
+
+//Main Class
+public class BankingSystem {
+    public static void main(String[] args) {
+
+        // Create Account
+        BankAccount acc = new BankAccount(1500);
+        acc.displayBalance();
+
+        // Deposit Money
+        acc.deposit(500);
+
+        // Withdraw Money (Exception Handling)
+        try {
+            acc.withdraw(1200); // This will throw exception
+        } catch (LessBalanceException e) {
+            System.out.println(e.getMessage());
+        }
+
+        // Demonstrating ArithmeticException
+        try {
+            int a = 10;
+            int b = 0;
+            int result = a / b; // Division by zero
+            System.out.println("Result: " + result);
+        } catch (ArithmeticException e) {
+            System.out.println("ArithmeticException caught: Division by zero is not 
+allowed.");
+        }
+    }
+}
